@@ -58,7 +58,7 @@ const Home: React.FC = () => {
     if (addingFriendIds.includes(userId)) return;
     try {
       setAddingFriendIds((prev) => [...prev, userId]);
-      await addFriend(userId);
+      await addFriend(userId as string);
       alert("Friend added successfully");
     } catch (err: any) {
       alert(err.message || "Failed to add friend");

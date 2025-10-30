@@ -43,7 +43,7 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 // Add friend
-export const addFriend = async (userId: number) => {
+export const addFriend = async (userId: string) => {
   console.log("user", userId);
   try {
     const token = getToken;
