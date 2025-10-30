@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://16.24.214.92/api"
+  baseURL: "http://localhost:3000/api"
 });
 
 const getToken = localStorage.getItem("token");

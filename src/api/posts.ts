@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://16.24.214.92/api" // Replace with your backend URL
+  baseURL: "http://localhost:3000/api" // Replace with your backend URL
 });
 
 // Token helper
@@ -17,14 +17,16 @@ export interface Media {
 
 export interface Post {
   _id: string;
+  content: string;
+  media?: { url: string; type: string; _id: string }[];
+  visibility: string;
+  visibilityLog?: string;
   user: {
     _id: string;
     fullName: string;
     username: string;
+    privacy: string;
   };
-  content: string;
-  media: Media[];
-  visibility: string;
 }
 
 export const getPosts = async (): Promise<Post[]> => {
