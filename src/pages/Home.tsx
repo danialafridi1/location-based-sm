@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getPosts, addFriend, type Post } from "../api/posts";
 import { getCurrentUser } from "../api/user";
 import { Heart, MessageCircle, Share2, UserPlus, LogOut, Sparkles, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface User {
   _id: string;
@@ -224,7 +225,12 @@ const Home: React.FC = () => {
                       </div>
                       <div>
                         <p className="font-bold text-gray-900">{post.user.fullName}</p>
-                        <p className="text-sm text-gray-500">@{post.user.username}</p>
+                        <Link
+  to={`/profile/${post.user._id}`}
+  className="text-sm text-indigo-600 hover:underline hover:text-indigo-800 transition-colors"
+>
+  @{post.user.username}
+</Link>
                       </div>
                     </div>
                   </div>
