@@ -22,6 +22,8 @@ export interface User {
   username: string;
   privacy: string;
   image?: string;
+  isContact?: boolean;
+  bio?: string;
 }
 
 const Home: React.FC = () => {

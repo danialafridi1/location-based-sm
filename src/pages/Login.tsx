@@ -19,7 +19,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       setError("Email and password are required");
       return;
     }
-
+setIsLoading(true);
     try {
         const response = await login(email, password);
      console.log("Login response:", response); // should log { message, data: { token } }
@@ -29,9 +29,10 @@ const handleSubmit = async (e: React.FormEvent) => {
 
     localStorage.setItem("token", token);
     console.log("Token saved:", localStorage.getItem("token")); // verify
-
+setIsLoading(false);
       navigate("/");
     } catch (err: any) {
+      setIsLoading(false);
       setError(err);
     }
   };
