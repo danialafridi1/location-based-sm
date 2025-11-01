@@ -271,7 +271,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                       ? "bg-gray-400 cursor-not-allowed"
                       : "bg-indigo-600 hover:bg-indigo-700"
                   }`}
-                >
+                        >
+                            
                   {posting ? "Replying..." : "Reply"}
                 </button>
               </div>
