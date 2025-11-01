@@ -1,13 +1,35 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:3000/api" // Replace with your backend URL
+  baseURL: "http://localhost:3000/api"
 });
 
-// Token helper
-const getToken = localStorage.getItem("token");
+// ✅ Automatically attach token to every request
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.warn("⚠️ No token found in localStorage");
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-console.log("getToken", getToken);
+// ✅ Response interceptor (optional: handle 401 globally)
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error("Unauthorized! Redirect to login if needed.");
+      // Optionally: redirect to login page
+      // window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 // Fetch posts
 export interface Media {
   url: string;
