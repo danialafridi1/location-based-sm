@@ -34,7 +34,7 @@ API.interceptors.response.use(
 // Get current user info
 export const getCurrentUser = async () => {
   try {
-    const token = getToken;
+    const token = localStorage.getItem("token");
     if (!token) throw new Error("Unauthorized");
 
     const res = await API.get("/user/me", {

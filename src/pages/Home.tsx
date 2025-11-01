@@ -34,7 +34,7 @@ const Home: React.FC = () => {
   const [errorPosts, setErrorPosts] = useState<string | null>(null);
   const [errorUser, setErrorUser] = useState<string | null>(null);
   const [addingFriendIds, setAddingFriendIds] = useState<string[]>([]);
-  const [openComments, setOpenComments] = useState<string | null>(null);
+  const [activeCommentPostId, setActiveCommentPostId] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
   const handleLogout = () => {
@@ -49,6 +49,7 @@ const Home: React.FC = () => {
       setPosts(Array.isArray(data) ? data : []);
       setErrorPosts(null);
     } catch (err: any) {
+      console.log("err", err);
       setErrorPosts(err.message || "Failed to load posts");
     } finally {
       setLoadingPosts(false);
@@ -81,8 +82,8 @@ const Home: React.FC = () => {
     }
   };
 
-  const toggleCommentSection = (postId: string) => {
-    setOpenComments((prev) => (prev === postId ? null : postId));
+  const toggleComments = (postId: string) => {
+    setActiveCommentPostId((prev) => (prev === postId ? null : postId));
   };
 
   useEffect(() => {
@@ -130,6 +131,7 @@ const Home: React.FC = () => {
       />
 
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Trending Banner */}
         <div className="mb-8 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-2xl p-6 text-white shadow-2xl transform hover:scale-[1.02] transition-all duration-300">
           <div className="flex items-center space-x-3 mb-2">
             <TrendingUp className="w-6 h-6" />
@@ -138,6 +140,7 @@ const Home: React.FC = () => {
           <p className="text-indigo-100">Discover what's popular in your network</p>
         </div>
 
+        {/* Posts Section */}
         {loadingPosts ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-indigo-600"></div>
@@ -209,9 +212,7 @@ const Home: React.FC = () => {
                           {post.user.fullName[0]?.toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-bold text-gray-900">
-                            {post.user.fullName}
-                          </p>
+                          <p className="font-bold text-gray-900">{post.user.fullName}</p>
                           <Link
                             to={`/profile/${post.user._id}`}
                             className="text-sm text-indigo-600 hover:underline"
@@ -230,8 +231,12 @@ const Home: React.FC = () => {
                         <span className="text-sm text-gray-600">Like</span>
                       </button>
                       <button
-                        onClick={() => toggleCommentSection(post._id)}
-                        className="flex items-center space-x-2 px-4 py-2 rounded-full hover:bg-blue-50 transition-colors group/btn"
+                        onClick={() => toggleComments(post._id)}
+                        className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors group/btn ${
+                          activeCommentPostId === post._id
+                            ? "bg-blue-100 text-blue-600"
+                            : "hover:bg-blue-50"
+                        }`}
                       >
                         <MessageCircle className="w-5 h-5 text-gray-400 group-hover/btn:text-blue-500 transition-colors" />
                         <span className="text-sm text-gray-600">Comment</span>
@@ -241,7 +246,8 @@ const Home: React.FC = () => {
                       </button>
                     </div>
 
-                    {openComments === post._id && (
+                    {/* ✅ Comment Section only for active post */}
+                    {activeCommentPostId === post._id && (
                       <div className="mt-4 animate-fade-in">
                         <CommentSection postId={post._id} />
                       </div>
@@ -260,7 +266,7 @@ const Home: React.FC = () => {
           to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
-          animation: fade-in 0.4s ease-out forwards;
+          animation: fade-in 0.3s ease-out forwards;
         }
       `}</style>
     </div>
