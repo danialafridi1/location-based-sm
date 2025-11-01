@@ -70,7 +70,7 @@ export const getPosts = async (): Promise<Post[]> => {
 export const addFriend = async (userId: string) => {
   console.log("user", userId);
   try {
-    const token = getToken;
+    const token = localStorage.getItem("token");
     if (!token) throw new Error("Unauthorized");
 
     const res = await API.post(
