@@ -1,11 +1,12 @@
 import { LogOut, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   user: {
     fullName: string;
     username: string;
     privacy: string;
+    _id: string;
   } | null;
   loadingUser: boolean;
   errorUser: string | null;
@@ -56,7 +57,9 @@ const Header: React.FC<HeaderProps> = ({ user, loadingUser, errorUser, onLogout 
                 </div>
                 <div className="hidden sm:flex flex-col">
                   <span className="font-semibold text-gray-900 text-sm">{user?.fullName}</span>
-                  <span className="text-xs text-gray-500">@{user?.username}</span>
+                  <Link to={`/profile/${user?._id}`} className="text-xs text-indigo-600 hover:underline">
+                    @{user?.username}
+                  </Link>
                 </div>
                 <span
                   className={`text-xs font-bold uppercase px-3 py-1 rounded-full ${
